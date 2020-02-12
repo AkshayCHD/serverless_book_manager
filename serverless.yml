@@ -74,14 +74,22 @@ provider:
 
 functions:
   addbooks:
-    handler: addbooks.func
+    handler: addbooks.handler
     events:
       - http: POST addbooks
   addemployees:
-    handler: addemployees
+    handler: addemployees.handler
     events:
       #represents the endpoint
-      - http: GET addemployees
+      - http: POST addemployees
+  issue:
+    handler: issue.handler
+    events:
+      - http: POST issue
+  return:
+    handler: return.handler
+    events:
+      - http: POST return
 
 # functions:
 #   hello:
@@ -177,3 +185,6 @@ resources:
         StreamSpecification:
           StreamViewType: "NEW_AND_OLD_IMAGES"
         TableName: ${self:provider.environment.EMPLOYEES_TABLE}
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline

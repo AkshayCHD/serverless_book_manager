@@ -1,12 +1,9 @@
-
-const randomBytes = require('crypto').randomBytes;
-
 const AWS = require('aws-sdk');
 
 const ddb = new AWS.DynamoDB.DocumentClient();
 
 
-module.exports.func = (event, context, callback) => {
+module.exports.handler = (event, context, callback) => {
   
     console.log(event.body)
     const requestBody = JSON.parse(event.body);
@@ -24,10 +21,10 @@ module.exports.func = (event, context, callback) => {
             },
         })
     }
-    recordRide(parseInt(requestBody.book_id), requestBody.book_name, requestBody.book_author).then(() => {
+    recordRide(parseInt(requestBody.book_id), requestBody.book_name, requestBody.book_author, requestBody.issued).then(() => {
 
         callback(null, {
-            statusCode: 201,
+            statusCode: 200,
             body: `id: ${requestBody.book_id} successfully entered`,
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -40,13 +37,15 @@ module.exports.func = (event, context, callback) => {
 };
 
 
-function recordRide(_id, _name, _author) {
+function recordRide(_id, _name, _author, _issued) {
     return ddb.put({
         TableName: process.env.BOOKS_TABLE,
         Item: {
             book_id: _id,
             name: _name,
-            author: _author
+            author: _author,
+            issued: _issued,
+            issued_by: undefined
         },
     }).promise();
 }
