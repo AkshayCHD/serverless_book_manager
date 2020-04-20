@@ -77,20 +77,33 @@ functions:
     handler: addbooks.handler
     events:
       - http: POST addbooks
+        cors: true
   addemployees:
     handler: addemployees.handler
     events:
       #represents the endpoint
       - http: POST addemployees
+        cors: true
   issue:
     handler: issue.handler
     events:
       - http: POST issue
+        cors: true
   return:
     handler: return.handler
     events:
       - http: POST return
-
+        cors: true
+  getAllBooks:
+    handler: getAllBooks.handler
+    events:
+      - http: GET getAllBooks
+        cors: true
+  getAllEmployees:
+    handler: getAllEmployees.handler
+    events:
+      - http: GET getAllEmployees
+        cors: true
 # functions:
 #   hello:
 #     handler: handler.hello

@@ -1,0 +1,21 @@
+Service Information
+service: book-manager
+stage: dev
+region: us-east-2
+stack: book-manager-dev
+resources: 31
+api keys:
+  None
+endpoints:
+  POST - https://h2haom2lf3.execute-api.us-east-2.amazonaws.com/dev/addbooks
+  POST - https://h2haom2lf3.execute-api.us-east-2.amazonaws.com/dev/addemployees
+  POST - https://h2haom2lf3.execute-api.us-east-2.amazonaws.com/dev/issue
+  POST - https://h2haom2lf3.execute-api.us-east-2.amazonaws.com/dev/return
+functions:
+  addbooks: book-manager-dev-addbooks
+  addemployees: book-manager-dev-addemployees
+  issue: book-manager-dev-issue
+  return: book-manager-dev-return
+layers:
+  None
+Serverless: Run the "serverless" command to setup monitoring, troubleshooting and testing.

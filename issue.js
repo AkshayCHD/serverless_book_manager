@@ -6,18 +6,24 @@ const ddb = new AWS.DynamoDB.DocumentClient();
 module.exports.handler = async (event) => {
     console.log(event.body)
     const requestBody = JSON.parse(event.body);
-    
+    console.log(requestBody)
     let validation = validationCheck(requestBody);
     if(validation.statusCode) {
         return validation;
     }
+    console.log("validation done")
     try {
-        const bookData = await getBookData(requestBody.book_id)
+        const book_id = Number(requestBody.book_id)
+        const bookData = await getBookData(book_id)
+        console.log("Book Found")
         if(bookData.Item.issued) {
             throw "The book is already issued"
         }
+        console.log("Book not issued")
         const employeeData = await getEmployeeData(requestBody.email);
+        console.log("got employee data")
         await issueBook(bookData.Item, employeeData.Item);
+        console.log("Book Issued")
         return positiveResponse({
             message: "successfully issued the book"
         })
@@ -38,7 +44,7 @@ function positiveResponse(data) {
 
 function negativeResponse(err) {
     return {
-        statusCode: 500,
+        statusCode: 400,
         body: JSON.stringify({
           Error: err,
         }),
@@ -83,7 +89,7 @@ const getBookData = (_book_id) => new Promise((resolve, reject) => {
         }
     };
     ddb.get(params, function (err, data) {
-        if(data.Item === undefined) {
+        if(data == null || data.Item === null) {
             reject('Book with given id not found');
         } else if(err) {
             reject(err);
@@ -101,7 +107,7 @@ const getEmployeeData = (_email) => new Promise((resolve, reject) => {
         }
     };
     ddb.get(params, function (err, data) {
-        if(data.Item === undefined) {
+        if(data == null || data.Item === null) {
             reject('Employee with given email not found');
         } else if(err) {
             reject(err);

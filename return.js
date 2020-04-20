@@ -12,7 +12,8 @@ module.exports.handler = async (event) => {
         return validation;
     }
     try {
-        const bookData = await getBookData(requestBody.book_id)
+        const book_id = Number(requestBody.book_id)
+        const bookData = await getBookData(book_id)
         if(bookData.Item.issued == false) {
             throw "The book is not issued"
         }
@@ -79,7 +80,7 @@ const getBookData = (_book_id) => new Promise((resolve, reject) => {
         }
     };
     ddb.get(params, function (err, data) {
-        if(data.Item === undefined) {
+        if(data == null || data.Item === null) {
             reject('Book with given id not found');
         } else if(err) {
             reject(err);
@@ -97,7 +98,7 @@ const getEmployeeData = (_email) => new Promise((resolve, reject) => {
         }
     };
     ddb.get(params, function (err, data) {
-        if(data.Item === undefined) {
+        if(data == null || data.Item === null) {
             reject('Employee with given email not found');
         } else if(err) {
             reject(err);

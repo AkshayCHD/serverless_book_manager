@@ -25,7 +25,9 @@ module.exports.handler = (event, context, callback) => {
 
         callback(null, {
             statusCode: 200,
-            body: `id: ${requestBody.book_id} successfully entered`,
+            body: JSON.stringify({
+              message: `id: ${requestBody.book_id} successfully entered`,
+            }),
             headers: {
                 'Access-Control-Allow-Origin': '*',
             },

@@ -22,7 +22,9 @@ module.exports.handler = async (event) => {
         await recordRide(requestBody.email, requestBody.name)
         return {
             statusCode: 200,
-            body: `id: ${requestBody.email} successfully entered`,
+            body: JSON.stringify({
+                message: `id: ${requestBody.email} successfully entered`
+            }),
             headers: {
                 'Access-Control-Allow-Origin': '*',
             },
